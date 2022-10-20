@@ -1,0 +1,17 @@
+###
+POST http://localhost:8080/api/v1/product
+Content-Type: application/json
+
+{
+  "name": "generated",
+  "owner": "aric2@"
+}
+
+###
+DELETE http://localhost:8080/api/v1/product/2
+Content-Type: application/json
+
+
+###
+PUT http://localhost:8080/api/v1/product/1?name=aric&price=1
+Content-Type: application/json
