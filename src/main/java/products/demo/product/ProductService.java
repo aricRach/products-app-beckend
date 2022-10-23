@@ -26,13 +26,17 @@ public class ProductService {
 //        if(existingProduct.isPresent()) {
 //            throw  new IllegalStateException("owner token");
 //        }
-        productRepository.save(product);
+        if(this.isProductValid(product)) {
+            productRepository.save(product);
+        } else {
+            throw new IllegalMonitorStateException("product not valid");
+        }
     }
 
     public void deleteProduct(Long id) {
         boolean isExist = productRepository.existsById(id);
         if(!isExist) {
-            throw new IllegalMonitorStateException("product with id " + id + " doesn\'t exist");
+            throw new IllegalMonitorStateException("product with id " + id + " doesn't exist");
         }
         productRepository.deleteById(id);
     }

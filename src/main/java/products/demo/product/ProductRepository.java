@@ -10,5 +10,7 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
 //    @Query("SELECT p FROM Product p WHERE p.owner = ?1") // jpa query
+//      Optional<Product> findProductByOwner(String owner);
+
     Optional<Product> findProductByOwner(String owner);
 }

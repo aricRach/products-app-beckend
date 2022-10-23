@@ -24,6 +24,7 @@ public class Product {
     private Double finalPrice;
     private Integer stock;
     private Double discountPercent;
+    @Column(nullable = false)
     private String owner;
 
     public Product() {}
