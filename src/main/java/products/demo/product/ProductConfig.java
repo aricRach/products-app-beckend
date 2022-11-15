@@ -10,7 +10,7 @@ import java.util.List;
 public class ProductConfig {
 
     @Bean
-    CommandLineRunner commandLineRunner(
+    CommandLineRunner createMockProducts(
             ProductRepository repository) {
         return args -> {
             Product ball = new Product(
