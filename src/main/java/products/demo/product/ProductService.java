@@ -1,33 +1,42 @@
 package products.demo.product;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import products.demo.user.User;
+import products.demo.user.UserRepository;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@Slf4j
+
 public class ProductService {
     private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository,
+                          UserRepository userRepository) {
         this.productRepository = productRepository;
+        this.userRepository = userRepository;
     }
     public List<Product> getProducts() {
         return productRepository.findAll();
     }
-
+@Transactional
     public void addNewProduct(Product product) {
-//        Optional<Product> existingProduct = productRepository.findProductByOwner(product.getOwner());
-//        if(existingProduct.isPresent()) {
-//            throw  new IllegalStateException("owner token");
-//        }
         if(this.isProductValid(product)) {
-            productRepository.save(product);
+            Optional<User> user = userRepository.findUserByEmail(product.getOwner());
+            if(user.isPresent()) {
+                User user2 = user.get();
+                user2.addProduct(product);
+                product.setUserOwner(user2);
+//                productRepository.save(product); // not working
+            }
         } else {
             throw new IllegalMonitorStateException("product not valid");
         }

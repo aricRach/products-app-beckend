@@ -1,9 +1,20 @@
 package products.demo.product;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import products.demo.user.User;
+
 import javax.persistence.*;
 
 @Entity
 @Table
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Product {
 
     @Id
@@ -24,104 +35,33 @@ public class Product {
     private Double finalPrice;
     private Integer stock;
     private Double discountPercent;
-    @Column(nullable = false)
-    private String owner;
-
-    public Product() {}
-
-    public Product(Long id, String name, String image,
-                   Double price, Integer stock, Double discountPercent, String owner) {
-        this.id = id;
-        this.name = name;
-        this.image = image;
-        this.price = price;
-        this.stock = stock;
-        this.discountPercent = discountPercent;
-        this.owner = owner;
-    }
+    @JsonBackReference
+    @ManyToOne(
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST},
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "user_id", referencedColumnName = "email")
+    private User userOwner;
 
     public Product(String name, String image,
-                   Double price, Integer stock, Double discountPercent, String owner) {
+                   Double price, Integer stock, Double discountPercent, User userOwner) {
         this.name = name;
         this.image = image;
         this.price = price;
-        this.stock = stock;
         this.discountPercent = discountPercent;
-        this.owner = owner;
+        this.stock = stock;
+        this.userOwner = userOwner;
     }
 
     public void updateProduct(Product product) {
         this.setName(product.name);
-//        this.setImage(product.image);
+        this.setImage(product.image);
         this.setPrice(product.price);
         this.setStock(product.stock);
         this.setDiscountPercent(product.discountPercent);
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public Double getFinalPrice() { return price - (price * (discountPercent/100)); }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Integer getStock() {
-        return stock;
-    }
-
-    public void setStock(Integer stock) {
-        this.stock = stock;
-    }
-
-    public Double getDiscountPercent() {
-        return discountPercent;
-    }
-
-    public void setDiscountPercent(Double discountPercent) {
-        this.discountPercent = discountPercent;
-    }
-
-    public String getOwner() {
-        return this.owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
-    @Override
-    public String toString() {
-        return "product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", image='" + image + '\'' +
-                ", price=" + price +
-                ", stock=" + stock +
-                ", discountPercent=" + discountPercent +
-                ", owner=" + owner +
-                '}';
+    String getOwner() {
+        return this.userOwner.getEmail();
     }
 }

@@ -1,11 +1,14 @@
 package products.demo.user;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@Slf4j
 public class UserService {
 
     UserRepository userRepository;
@@ -20,6 +23,9 @@ public class UserService {
     }
 
     public void addNewUser(User user) {
-        this.userRepository.save(user);
+       Optional<User> User = userRepository.findUserByEmail(user.getEmail());
+        if(!User.isPresent()) {
+            this.userRepository.save(user);
+        }
     }
 }
