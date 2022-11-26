@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -46,5 +47,19 @@ public class ProductController {
             @PathVariable("productId") Long productId,
             @RequestBody() Product product) {
         productService.updateProduct(product, productId);
+    }
+
+    @PostMapping(path = "buy")
+    public void buyProducts(@RequestBody ProductCartItem[] products)
+    {
+        try {
+            log.info(products[0].toString());
+            HashMap stockStatus = productService.checkStock(products);
+            // todo decide if map of errors is needed
+            productService.updatePurchase(products);
+        } catch (Exception e) {
+            throw e;
+        }
+
     }
 }

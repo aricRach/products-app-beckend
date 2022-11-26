@@ -7,9 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import products.demo.user.User;
 import products.demo.user.UserRepository;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -83,5 +81,36 @@ public class ProductService {
                 product.getStock() >= 0 &&
                 product.getPrice() > 0 &&
                 product.getDiscountPercent() >= 0 && product.getDiscountPercent() < 100;
+    }
+
+    public HashMap checkStock(ProductCartItem[] products) {
+        HashMap<String, Boolean> map = new HashMap();
+        Boolean isValid = true;
+        String validationMessage = "";
+        for(int i=0; i<products.length; i++) {
+            ProductCartItem currentProduct = products[i];
+            Optional<Product> productInDb = productRepository.findProductById(currentProduct.getId());
+            if(currentProduct.getNumberOfItems() > productInDb.get().getStock()) {
+                map.put(currentProduct.getName(), false);
+                isValid = false;
+                validationMessage += ' ' + currentProduct.getName();
+            } else {
+                map.put(currentProduct.getName(), true);
+            }
+            if(!isValid) {
+                throw new IllegalStateException("The following are not in stock for your order:\n " + validationMessage);
+//                throw new IllegalStateException("The following are not in stock for your order:\n " + map);
+            }
+        }
+        return map;
+    }
+
+    @Transactional
+    public void updatePurchase(ProductCartItem[] products) {
+        for(int i=0; i<products.length; i++) {
+            ProductCartItem currentProduct = products[i];
+            Optional<Product> productInDb = productRepository.findProductById(currentProduct.getId());
+            productInDb.get().setStock(currentProduct.getStock() - currentProduct.getNumberOfItems());
+        }
     }
 }
