@@ -61,6 +61,14 @@ public class Product {
         this.setDiscountPercent(product.discountPercent);
     }
 
+    public Double getFinalPrice() {
+        return discountPercent != 0 ? price  - (price * discountPercent/100) : price ;
+    }
+
+    public void setFinalPrice(Double price) {
+        this.finalPrice = price;
+    }
+
     String getOwner() {
         return this.userOwner.getEmail();
     }
