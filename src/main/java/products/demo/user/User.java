@@ -39,9 +39,8 @@ public class User implements Serializable {
         this.productList = new ArrayList<>();
     }
 
-    public int addProduct(Product p) {
-        this.productList.add(p);
-        return this.productList.size();
+    public boolean addProduct(Product p) {
+        return this.productList.add(p);
     }
 
 }

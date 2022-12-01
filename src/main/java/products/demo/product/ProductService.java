@@ -28,12 +28,11 @@ public class ProductService {
 @Transactional
     public void addNewProduct(Product product) {
         if(this.isProductValid(product)) {
-            Optional<User> user = userRepository.findUserByEmail(product.getOwner());
-            if(user.isPresent()) {
-                User user2 = user.get();
-                user2.addProduct(product);
-                product.setUserOwner(user2);
-//                productRepository.save(product); // not working
+            Optional<User> OptionalUser = userRepository.findUserByEmail(product.getOwner());
+            if(OptionalUser.isPresent()) {
+                User productUser = OptionalUser.get();
+                productUser.addProduct(product);
+                product.setUserOwner(productUser);
             }
         } else {
             throw new IllegalMonitorStateException("product not valid");
@@ -98,7 +97,7 @@ public class ProductService {
                 map.put(currentProduct.getName(), true);
             }
             if(!isValid) {
-                throw new IllegalStateException("The following are not in stock for your order:\n " + validationMessage);
+                throw new IllegalStateException("The following are out of stock for your order:\n " + validationMessage);
 //                throw new IllegalStateException("The following are not in stock for your order:\n " + map);
             }
         }
