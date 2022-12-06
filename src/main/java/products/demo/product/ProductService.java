@@ -106,10 +106,16 @@ public class ProductService {
 
     @Transactional
     public void updatePurchase(ProductCartItem[] products) {
+        log.info("" + products.length);
         for(int i=0; i<products.length; i++) {
-            ProductCartItem currentProduct = products[i];
-            Optional<Product> productInDb = productRepository.findProductById(currentProduct.getId());
-            productInDb.get().setStock(currentProduct.getStock() - currentProduct.getNumberOfItems());
+            ProductCartItem currentItemProduct = products[i];
+            Optional<Product> optionalProductInDb = productRepository.findProductById(currentItemProduct.getId());
+            if(optionalProductInDb.isPresent()) {
+                Product currentProduct = optionalProductInDb.get();
+                currentProduct.setStock(currentItemProduct.getStock() - currentItemProduct.getNumberOfItems());
+                currentProduct.getUserOwner().addProductToOrdersHistory(currentProduct);
+                log.info(""+currentProduct.getUserOwner().getOrders().size());
+            }
         }
     }
 }

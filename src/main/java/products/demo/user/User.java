@@ -32,6 +32,10 @@ public class User implements Serializable {
     )
     private List<Product> productList;
 
+    @OneToMany()
+    private List<Product> orders;
+
+
     public User(String name, String userName, String email) {
         this.name = name;
         this.userName = userName;
@@ -41,6 +45,9 @@ public class User implements Serializable {
 
     public boolean addProduct(Product p) {
         return this.productList.add(p);
+    }
+    public boolean addProductToOrdersHistory(Product p) {
+        return this.orders.add(p);
     }
 
 }

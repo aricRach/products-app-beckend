@@ -28,4 +28,13 @@ public class UserService {
             this.userRepository.save(user);
         }
     }
+
+    public User getUserByEmail(String email) {
+       Optional<User> userOptional = this.userRepository.findUserByEmail(email);
+        if(userOptional.isPresent()) {
+            return userOptional.get();
+        } else {
+            throw new IllegalMonitorStateException("user isn\'t exist");
+        }
+    }
 }

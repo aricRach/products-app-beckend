@@ -23,6 +23,12 @@ public class UserController {
         return this.userService.getUsers();
     }
 
+    @GetMapping("/{email}")
+    public User getUserByEmail(@PathVariable String email) {
+        log.info(email);
+        return this.userService.getUserByEmail(email);
+    }
+
     @PostMapping
     public void registerUser(@RequestBody User user) {
         log.info(user.toString());
