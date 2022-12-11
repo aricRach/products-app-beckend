@@ -105,7 +105,8 @@ public class ProductService {
     }
 
     @Transactional
-    public void updatePurchase(ProductCartItem[] products) {
+    public void updatePurchase(Cart cart) {
+        ProductCartItem[] products = cart.cartItems;
         log.info("" + products.length);
         for(int i=0; i<products.length; i++) {
             ProductCartItem currentItemProduct = products[i];
@@ -113,9 +114,17 @@ public class ProductService {
             if(optionalProductInDb.isPresent()) {
                 Product currentProduct = optionalProductInDb.get();
                 currentProduct.setStock(currentItemProduct.getStock() - currentItemProduct.getNumberOfItems());
-                currentProduct.getUserOwner().addProductToOrdersHistory(currentProduct);
-                log.info(""+currentProduct.getUserOwner().getOrders().size());
+                this.setUserOrdersHistory(currentProduct, currentItemProduct.getNumberOfItems(), cart.getBuyerEmail());
             }
         }
+    }
+
+    @Transactional
+    public void setUserOrdersHistory(Product product, int numberOfItems, String buyerEmail) {
+        ProductPurchaseItem purchaseItem = new ProductPurchaseItem(product);
+        purchaseItem.setDate(new Date());
+        purchaseItem.setNumberOfItems(numberOfItems);
+        // todo: change from add to product owner to add to the current logged in user
+        userRepository.findUserByEmail(buyerEmail).get().addProductToOrdersHistory(purchaseItem);
     }
 }

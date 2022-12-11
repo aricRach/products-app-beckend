@@ -50,13 +50,12 @@ public class ProductController {
     }
 
     @PostMapping(path = "buy")
-    public void buyProducts(@RequestBody ProductCartItem[] products)
+    public void buyProducts(@RequestBody Cart cart)
     {
         try {
-            log.info(products[0].toString());
-            HashMap stockStatus = productService.checkStock(products);
+            HashMap stockStatus = productService.checkStock(cart.cartItems);
             // todo decide if map of errors is needed
-            productService.updatePurchase(products);
+            productService.updatePurchase(cart);
         } catch (Exception e) {
             throw e;
         }

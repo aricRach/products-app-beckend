@@ -16,7 +16,7 @@ public class UserConfig {
             User aric = new User(
                     "aric", "aricRach", "aricrachmany@gmail.com");
             User tal = new User(
-                    "tal", "talKabaso", "talKabaso@gmail.com");
+                    "tal", "talKabaso", "talkabaso@gmail.com");
 
             repository.saveAll(List.of(aric, tal));
         };

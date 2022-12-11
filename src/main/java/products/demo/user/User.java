@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import products.demo.product.Product;
+import products.demo.product.ProductPurchaseItem;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,7 +21,6 @@ import java.util.List;
 @NoArgsConstructor
 
 public class User implements Serializable {
-    private String name;
     private String userName;
     @Id
     private String email;
@@ -32,12 +32,11 @@ public class User implements Serializable {
     )
     private List<Product> productList;
 
-    @OneToMany()
-    private List<Product> orders;
+    @OneToMany(cascade= {CascadeType.MERGE, CascadeType.PERSIST})
+    private List<ProductPurchaseItem> orders;
 
 
     public User(String name, String userName, String email) {
-        this.name = name;
         this.userName = userName;
         this.email = email;
         this.productList = new ArrayList<>();
@@ -46,7 +45,7 @@ public class User implements Serializable {
     public boolean addProduct(Product p) {
         return this.productList.add(p);
     }
-    public boolean addProductToOrdersHistory(Product p) {
+    public boolean addProductToOrdersHistory(ProductPurchaseItem p) {
         return this.orders.add(p);
     }
 
