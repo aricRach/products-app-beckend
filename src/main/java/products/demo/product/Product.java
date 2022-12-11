@@ -1,6 +1,7 @@
 package products.demo.product;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.ToString;
 import products.demo.user.User;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table
@@ -15,7 +17,11 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Product {
+
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
+public class Product implements Serializable {
 
     @Id
     @SequenceGenerator(
@@ -35,11 +41,9 @@ public class Product {
     private Double finalPrice;
     private Integer stock;
     private Double discountPercent;
-    @JsonBackReference
     @ManyToOne(
             cascade = {CascadeType.MERGE, CascadeType.PERSIST},
-            fetch = FetchType.LAZY
-    )
+            fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "email")
     private User userOwner;
 

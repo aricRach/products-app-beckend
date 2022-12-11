@@ -1,6 +1,8 @@
 package products.demo.user;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,17 +21,19 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "email")
+@JsonIdentityReference(alwaysAsId = true) // get just the userOwner email instead of the object of the user when do findAll
 public class User implements Serializable {
     private String userName;
     @Id
     private String email;
 
-    @JsonManagedReference
     @OneToMany(
         mappedBy = "userOwner",
-        cascade = {CascadeType.MERGE, CascadeType.PERSIST}
-    )
+        cascade = {CascadeType.MERGE, CascadeType.PERSIST},
+            fetch = FetchType.EAGER)
     private List<Product> productList;
 
     @OneToMany(cascade= {CascadeType.MERGE, CascadeType.PERSIST})
