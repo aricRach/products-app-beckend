@@ -3,6 +3,7 @@ package products.demo.user;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import products.demo.product.ProductPurchaseItem;
 
 import java.util.List;
 
@@ -27,6 +28,12 @@ public class UserController {
     public User getUserByEmail(@PathVariable String email) {
         log.info(email);
         return this.userService.getUserByEmail(email);
+    }
+
+    @GetMapping("/orders/{email}")
+    public List<ProductPurchaseItem> geUserOrdersByEmail(@PathVariable String email) {
+        log.info(email);
+        return this.userService.getUserOrdersByEmail(email);
     }
 
     @PostMapping
