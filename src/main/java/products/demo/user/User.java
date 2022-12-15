@@ -2,6 +2,7 @@ package products.demo.user;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,6 +31,7 @@ public class User implements Serializable {
     @Id
     private String email;
 
+    @JsonManagedReference
     @OneToMany(
         mappedBy = "userOwner",
         cascade = {CascadeType.MERGE, CascadeType.PERSIST},

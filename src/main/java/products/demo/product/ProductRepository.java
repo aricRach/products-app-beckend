@@ -15,4 +15,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 //    Optional<Product> findProductByOwner(String owner);
     Optional<Product> findProductById(Long id);
+
+    @Query("SELECT p FROM Product p WHERE p.userOwner.email <> ?1")
+    List<Product> findAllExceptUser(String userEmail);
 }

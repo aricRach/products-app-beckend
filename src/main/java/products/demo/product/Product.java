@@ -1,5 +1,6 @@
 package products.demo.product;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
@@ -41,6 +42,8 @@ public class Product implements Serializable {
     private Double finalPrice;
     private Integer stock;
     private Double discountPercent;
+
+    @JsonBackReference
     @ManyToOne(
             cascade = {CascadeType.MERGE, CascadeType.PERSIST},
             fetch = FetchType.EAGER)

@@ -19,10 +19,14 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping
-    public List<Product> getProducts() {
-        return this.productService.getProducts();
+    @GetMapping()
+    public List<Product> getAllProducts(@RequestParam("userEmail") String userEmail) {
+        if(userEmail != null) {
+            return this.productService.getAllProducts(userEmail);
+        }
+        return this.productService.getAllProducts(null);
     }
+
 
     @GetMapping(path = "{email}")
     public List<Product> getProductsByOwner(@PathVariable("email") String email) {

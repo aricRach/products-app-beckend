@@ -22,7 +22,10 @@ public class ProductService {
         this.productRepository = productRepository;
         this.userRepository = userRepository;
     }
-    public List<Product> getProducts() {
+    public List<Product> getAllProducts(String userEmail) {
+        if (userEmail != null) {
+            return productRepository.findAllExceptUser(userEmail);
+        }
         return productRepository.findAll();
     }
 @Transactional
