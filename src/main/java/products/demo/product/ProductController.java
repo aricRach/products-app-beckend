@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping(path="api/v1/product")
+@RequestMapping(path="api/v1/products")
 @Slf4j
 public class ProductController {
 
@@ -22,6 +22,11 @@ public class ProductController {
     @GetMapping
     public List<Product> getProducts() {
         return this.productService.getProducts();
+    }
+
+    @GetMapping(path = "{email}")
+    public List<Product> getProductsByOwner(@PathVariable("email") String email) {
+        return this.productService.getProductsByOwner(email);
     }
 
     @PostMapping

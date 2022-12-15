@@ -124,7 +124,10 @@ public class ProductService {
         ProductPurchaseItem purchaseItem = new ProductPurchaseItem(product);
         purchaseItem.setDate(new Date());
         purchaseItem.setNumberOfItems(numberOfItems);
-        // todo: change from add to product owner to add to the current logged in user
         userRepository.findUserByEmail(buyerEmail).get().addProductToOrdersHistory(purchaseItem);
+    }
+
+    public List<Product> getProductsByOwner(String email) {
+       return this.productRepository.findProductsByOwner(email);
     }
 }
