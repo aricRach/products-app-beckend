@@ -43,7 +43,6 @@ public class Product implements Serializable {
     private Integer stock;
     private Double discountPercent;
 
-    @JsonBackReference
     @ManyToOne(
             cascade = {CascadeType.MERGE, CascadeType.PERSIST},
             fetch = FetchType.EAGER)

@@ -31,7 +31,6 @@ public class User implements Serializable {
     @Id
     private String email;
 
-    @JsonManagedReference
     @OneToMany(
         mappedBy = "userOwner",
         cascade = {CascadeType.MERGE, CascadeType.PERSIST},
