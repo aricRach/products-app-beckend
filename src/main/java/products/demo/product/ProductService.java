@@ -112,12 +112,12 @@ public class ProductService {
         ProductCartItem[] products = cart.cartItems;
         log.info("" + products.length);
         for(int i=0; i<products.length; i++) {
-            ProductCartItem currentItemProduct = products[i];
-            Optional<Product> optionalProductInDb = productRepository.findProductById(currentItemProduct.getId());
+            ProductCartItem currentCartItemProduct = products[i];
+            Optional<Product> optionalProductInDb = productRepository.findProductById(currentCartItemProduct.getId());
             if(optionalProductInDb.isPresent()) {
                 Product currentProduct = optionalProductInDb.get();
-                currentProduct.setStock(currentItemProduct.getStock() - currentItemProduct.getNumberOfItems());
-                this.setUserOrdersHistory(currentProduct, currentItemProduct.getNumberOfItems(), cart.getBuyerEmail());
+                currentProduct.setStock(currentCartItemProduct.getStock() - currentCartItemProduct.getNumberOfItems());
+                this.setUserOrdersHistory(currentProduct, currentCartItemProduct.getNumberOfItems(), cart.getBuyerEmail());
             }
         }
     }
@@ -132,5 +132,9 @@ public class ProductService {
 
     public List<Product> getProductsByOwner(String email) {
        return this.productRepository.findProductsByOwner(email);
+    }
+
+    public Optional<Product> getProductById(Long pid) {
+        return productRepository.findProductById(pid);
     }
 }

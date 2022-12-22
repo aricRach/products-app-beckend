@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path="api/v1/products")
@@ -31,6 +32,11 @@ public class ProductController {
     @GetMapping(path = "{email}")
     public List<Product> getProductsByOwner(@PathVariable("email") String email) {
         return this.productService.getProductsByOwner(email);
+    }
+
+    @GetMapping(path = "single-product/{pid}")
+    public Optional<Product> getProductById(@PathVariable("pid") Long pid) {
+        return this.productService.getProductById(pid);
     }
 
     @PostMapping
