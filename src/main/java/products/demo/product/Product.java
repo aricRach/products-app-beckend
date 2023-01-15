@@ -36,6 +36,7 @@ public class Product implements Serializable {
     )
     private Long id;
     private String name;
+    @Column(length = 1024)
     private String image;
     private Double price;
     @Transient

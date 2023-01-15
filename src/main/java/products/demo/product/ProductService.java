@@ -36,6 +36,8 @@ public class ProductService {
                 User productUser = OptionalUser.get();
                 productUser.addProduct(product);
                 product.setUserOwner(productUser);
+            } else {
+                throw new IllegalMonitorStateException("user not exist");
             }
         } else {
             throw new IllegalMonitorStateException("product not valid");
