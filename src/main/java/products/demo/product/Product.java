@@ -46,7 +46,7 @@ public class Product implements Serializable {
 
     @ManyToOne(
             cascade = {CascadeType.MERGE, CascadeType.PERSIST},
-            fetch = FetchType.EAGER)
+            fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "email")
     private User userOwner;
 
@@ -79,4 +79,8 @@ public class Product implements Serializable {
     String getOwner() {
         return this.userOwner.getEmail();
     }
+
+    public void setImage(String imageUrl){
+        this.image = imageUrl;
+    };
 }

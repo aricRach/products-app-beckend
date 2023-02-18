@@ -40,8 +40,8 @@ public class ProductController {
     }
 
     @PostMapping
-    public void registerProduct(@RequestBody Product product) {
-        productService.addNewProduct(product);
+    public Product registerProduct(@RequestBody Product product) {
+        return productService.addNewProduct(product);
     }
 
     @DeleteMapping(path="{productId}")
@@ -62,6 +62,13 @@ public class ProductController {
             @PathVariable("productId") Long productId,
             @RequestBody() Product product) {
         productService.updateProduct(product, productId);
+    }
+
+    @PatchMapping(path="add-image-url/{productId}")
+    public void addImageUrlToProduct(
+            @PathVariable("productId") Long productId,
+            @RequestBody() String downloadURL) {
+        productService.addImageUrl(productId, downloadURL);
     }
 
     @PostMapping(path = "buy")

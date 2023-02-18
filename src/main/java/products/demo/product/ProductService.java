@@ -29,13 +29,14 @@ public class ProductService {
         return productRepository.findAll();
     }
 @Transactional
-    public void addNewProduct(Product product) {
+    public Product addNewProduct(Product product) {
         if(this.isProductValid(product)) {
             Optional<User> OptionalUser = userRepository.findUserByEmail(product.getOwner());
             if(OptionalUser.isPresent()) {
                 User productUser = OptionalUser.get();
                 productUser.addProduct(product);
                 product.setUserOwner(productUser);
+                return product;
             } else {
                 throw new IllegalMonitorStateException("user not exist");
             }
@@ -138,5 +139,13 @@ public class ProductService {
 
     public Optional<Product> getProductById(Long pid) {
         return productRepository.findProductById(pid);
+    }
+
+    @Transactional
+    public void addImageUrl(Long productId, String downloadURL) {
+        Product existingProduct = productRepository.findById(productId)
+                .orElseThrow(() ->
+                        new IllegalStateException("product with id " + productId + "does not exist") );
+        existingProduct.setImage(downloadURL);
     }
 }

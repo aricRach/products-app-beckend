@@ -34,7 +34,7 @@ public class User implements Serializable {
     @OneToMany(
         mappedBy = "userOwner",
         cascade = {CascadeType.MERGE, CascadeType.PERSIST},
-            fetch = FetchType.EAGER)
+            fetch = FetchType.LAZY)
     private List<Product> productList;
 
     @OneToMany(cascade= {CascadeType.MERGE, CascadeType.PERSIST})
