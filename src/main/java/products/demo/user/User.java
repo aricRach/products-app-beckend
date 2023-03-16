@@ -2,7 +2,6 @@ package products.demo.user;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,6 +30,9 @@ public class User implements Serializable {
     @Id
     private String email;
 
+    @Column(length = 1024)
+    private String token;
+
     @OneToMany(
         mappedBy = "userOwner",
         cascade = {CascadeType.MERGE, CascadeType.PERSIST},
@@ -41,9 +43,10 @@ public class User implements Serializable {
     private List<ProductPurchaseItem> orders;
 
 
-    public User(String name, String userName, String email) {
+    public User(String name, String userName, String email, String token) {
         this.userName = userName;
         this.email = email;
+        this.token = token;
         this.productList = new ArrayList<>();
     }
 

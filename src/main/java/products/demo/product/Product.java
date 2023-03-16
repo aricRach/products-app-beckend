@@ -1,6 +1,5 @@
 package products.demo.product;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
@@ -76,11 +75,11 @@ public class Product implements Serializable {
         this.finalPrice = price;
     }
 
-    String getOwner() {
+    public String getOwner() {
         return this.userOwner.getEmail();
     }
 
     public void setImage(String imageUrl){
         this.image = imageUrl;
-    };
+    }
 }

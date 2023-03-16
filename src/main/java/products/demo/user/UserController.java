@@ -3,6 +3,7 @@ package products.demo.user;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import products.demo.TokenManagment.TokenManagementService;
 import products.demo.product.ProductPurchaseItem;
 
 import java.util.List;
@@ -13,10 +14,12 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final TokenManagementService tokenManagementService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, TokenManagementService tokenManagementService) {
         this.userService = userService;
+        this.tokenManagementService = tokenManagementService;
     }
 
     @GetMapping
@@ -26,20 +29,27 @@ public class UserController {
 
     @GetMapping("/{email}")
     public User getUserByEmail(@PathVariable String email) {
-        log.info(email);
         return this.userService.getUserByEmail(email);
     }
 
     @GetMapping("/orders/{email}")
-    public List<ProductPurchaseItem> geUserOrdersByEmail(@PathVariable String email) {
-        log.info(email);
-        return this.userService.getUserOrdersByEmail(email);
+    public List<ProductPurchaseItem> geUserOrdersByEmail(@PathVariable String email,
+    @RequestHeader("Authorization") String authorization) {
+        try {
+            this.tokenManagementService.checkTokenByUserEmail(authorization, email);
+            return this.userService.getUserOrdersByEmail(email);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @PostMapping
     public void registerUser(@RequestBody User user) {
-        log.info(user.toString());
         this.userService.addNewUser(user);
     }
 
+    @PostMapping("set-token")
+    public void setUserToken(@RequestBody User user) {
+        this.userService.setToken(user);
+    }
 }

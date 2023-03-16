@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import products.demo.product.ProductPurchaseItem;
 
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,5 +47,10 @@ public class UserService {
         } else {
             throw new IllegalMonitorStateException("user isn\'t exist");
         }
+    }
+
+    @Transactional
+    public void setToken(User user) {
+        this.userRepository.findUserByEmail(user.getEmail()).get().setToken(user.getToken());
     }
 }
