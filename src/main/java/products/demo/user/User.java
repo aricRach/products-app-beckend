@@ -31,7 +31,7 @@ public class User implements Serializable {
     private String email;
 
     @Column(length = 1024)
-    private String token;
+    private String idToken;
 
     @OneToMany(
         mappedBy = "userOwner",
@@ -46,7 +46,7 @@ public class User implements Serializable {
     public User(String name, String userName, String email, String token) {
         this.userName = userName;
         this.email = email;
-        this.token = token;
+        this.idToken = token;
         this.productList = new ArrayList<>();
     }
 

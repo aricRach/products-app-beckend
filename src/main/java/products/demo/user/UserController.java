@@ -49,7 +49,8 @@ public class UserController {
     }
 
     @PostMapping("set-token")
-    public void setUserToken(@RequestBody User user) {
-        this.userService.setToken(user);
+    public String setUserToken(@RequestBody User user) {
+        log.info("" + user.getIdToken());
+        return this.userService.setToken(user);
     }
 }

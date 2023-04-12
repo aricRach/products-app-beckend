@@ -45,12 +45,19 @@ public class UserService {
         if(userOptional.isPresent()) {
             return userOptional.get().getOrders();
         } else {
-            throw new IllegalMonitorStateException("user isn\'t exist");
+            throw new IllegalMonitorStateException("user not exist");
         }
     }
 
     @Transactional
-    public void setToken(User user) {
-        this.userRepository.findUserByEmail(user.getEmail()).get().setToken(user.getToken());
+    public String setToken(User user) {
+        Optional<User> optionalUser = this.userRepository.findUserByEmail(user.getEmail());
+        if(optionalUser.isPresent()) {
+            User currentUser = optionalUser.get();
+            currentUser.setIdToken(user.getIdToken());
+            return currentUser.getUserName();
+        } else {
+            throw new IllegalMonitorStateException("user not exist");
+        }
     }
 }

@@ -27,7 +27,7 @@ public class TokenManagementService {
         Optional<User> optionalUser = this.userRepository.findUserByEmail(userId);
         if(optionalUser.isPresent()) {
             User user = optionalUser.get();
-            boolean isAuthenticated = Objects.equals(user.getToken(), token);
+            boolean isAuthenticated = Objects.equals(user.getIdToken(), token);
             if(!isAuthenticated) {
                 throw new IllegalStateException("invalid token");
             }
